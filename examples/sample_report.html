@@ -1,0 +1,2271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PQC Readiness Report — 2026-08-08 20:27 UTC</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1a1a; --muted: #5b6472; --border: #e2e5ea;
+    --critical: #b3261e; --high: #b5560a; --medium: #8a6d00; --low: #2e6b3f;
+    --card: #f7f8fa; --accent: #2454a6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14161a; --fg:#e8eaed; --muted:#9aa3b2; --card:#1e2126; --border:#2b2f36; --accent:#7ba7ff; }
+  }
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--fg); max-width: 980px; margin: 2rem auto; padding: 0 1.5rem; line-height:1.5; }
+  h1 { margin-bottom: 0.2rem; }
+  .meta { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; }
+  .stat .n { font-size: 1.6rem; font-weight: 700; }
+  .stat .l { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0 2rem; font-size: 0.88rem; }
+  th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+  th { background: var(--card); }
+  .overflow { overflow-x: auto; }
+  tr.tier-Critical td:nth-child(1) { border-left: 4px solid var(--critical); }
+  tr.tier-High td:nth-child(1) { border-left: 4px solid var(--high); }
+  tr.tier-Medium td:nth-child(1) { border-left: 4px solid var(--medium); }
+  tr.tier-Low td:nth-child(1) { border-left: 4px solid var(--low); }
+  .badge { display:inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .badge.vulnerable { background:#fbdedb; color:var(--critical); }
+  .badge.weakened { background:#fbe8c9; color:var(--medium); }
+  .badge.safe { background:#dcf3e3; color:var(--low); }
+  .badge.pqc { background:#dbe8fb; color:var(--accent); }
+  .badge.unknown { background:#e7e7e7; color:#555; }
+  @media (prefers-color-scheme: dark) {
+    .badge.vulnerable { background:#3a1f1e; color:#ff8a80; }
+    .badge.weakened { background:#3a2f14; color:#ffcc66; }
+    .badge.safe { background:#173a24; color:#7de3a0; }
+    .badge.pqc { background:#182a45; color:#9dc0ff; }
+    .badge.unknown { background:#2b2f36; color:#aab; }
+  }
+  section { margin-bottom: 2.5rem; }
+  a { color: var(--accent); }
+  .timeline li { margin-bottom: 0.4rem; }
+  footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Post-Quantum Cryptography (PQC) Readiness Report</h1>
+<div class="meta">Generated 2026-08-08 20:27 UTC &middot; 6 asset(s) scanned &middot; threat horizon assumption: 10 years</div>
+
+<section>
+  <h2>Executive Summary</h2>
+  <p>This report assesses network-facing TLS/certificate cryptography against post-quantum risk.
+     It does <strong>not</strong> test whether an attacker can break these systems today — it tests whether
+     the cryptography in use today will still protect this traffic once a cryptographically relevant
+     quantum computer (CRQC) exists, and whether traffic captured today could be decrypted retroactively
+     ("harvest now, decrypt later").</p>
+  <div class="summary-grid">
+    <div class="stat"><div class="n">128</div><div class="l">Findings</div></div>
+    <div class="stat"><div class="n">74</div><div class="l">Vulnerable</div></div>
+    <div class="stat"><div class="n">17</div><div class="l">Weakened</div></div>
+    <div class="stat"><div class="n">29</div><div class="l">Safe</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">Post-Quantum</div></div>
+    <div class="stat"><div class="n">9</div><div class="l">Critical Priority</div></div>
+    <div class="stat"><div class="n">47</div><div class="l">High Priority</div></div>
+    <div class="stat"><div class="n">43</div><div class="l">Internet-Facing HNDL Risk</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Crypto Inventory Findings</h2>
+  <p>Every distinct algorithm observed, doing every distinct job (key exchange, certificate signature,
+     or symmetric cipher), across every scanned asset.</p>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Mechanism</th><th>Algorithm</th><th>Key Size</th><th>Expiry</th><th>Quantum-Vulnerable</th><th>Classification</th></tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ECDSA (secp256r1)</td>
+      <td>256</td>
+      <td>2026-10-12</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ecdsa-with-SHA256</td>
+      <td>—</td>
+      <td>2026-10-12</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-12</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ecdsa-with-SHA384</td>
+      <td>—</td>
+      <td>2029-02-20</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2028-01-28</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-12</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_GCM_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>253</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>CHACHA20_POLY1305_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>253</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>CHACHA20_POLY1305_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>AES_256_GCM_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ECDSA (secp256r1)</td>
+      <td>256</td>
+      <td>2026-10-27</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ecdsa-with-SHA256</td>
+      <td>—</td>
+      <td>2026-10-27</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-27</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>ecdsa-with-SHA384</td>
+      <td>—</td>
+      <td>2035-05-27</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2028-12-31</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-27</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_GCM_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>253</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>CHACHA20_POLY1305_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>253</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>CHACHA20_POLY1305_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>AES_256_GCM_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>symmetric</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-26</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>1024</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>1024</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>1024</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-26</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>RC4_128_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Yes (classical)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>RC4_128_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Yes (classical)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>RC4_128_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Yes (classical)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-26</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>1024</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>—</td>
+      <td>signature</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>—</td>
+      <td>2026-10-26</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>—</td>
+      <td>hash</td>
+      <td>SHA256</td>
+      <td>32</td>
+      <td>2026-10-26</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>RSA</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Unknown</td>
+      <td><span class="badge unknown">Unknown</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_GCM_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA256</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA256</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>128</td>
+      <td>—</td>
+      <td>Partially (Grover)</td>
+      <td><span class="badge weakened">Weakened</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>168</td>
+      <td>—</td>
+      <td>Yes (classically broken, also quantum-weakened)</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>ECDHE</td>
+      <td>256</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>symmetric</td>
+      <td>AES_256_CBC_SHA384</td>
+      <td>256</td>
+      <td>—</td>
+      <td>No</td>
+      <td><span class="badge safe">Safe</span></td>
+    </tr>    <tr>
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>key exchange</td>
+      <td>DHE</td>
+      <td>2048</td>
+      <td>—</td>
+      <td>Yes</td>
+      <td><span class="badge vulnerable">Vulnerable</span></td>
+    </tr>  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Prioritized Remediation Roadmap</h2>
+  <p>Findings are ranked by a priority score combining: crypto severity, whether "harvest now, decrypt
+     later" applies and how far the asset's declared data retention extends past the assumed quantum
+     threat horizon, internet vs. internal exposure, and remediation complexity. Full methodology in the
+     README.</p>
+  <h3>Critical Priority</h3>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Algorithm</th><th>Issue</th><th>Why It Matters</th><th>Recommended Fix</th><th>Effort</th><th>Exposure</th><th>Retention</th></tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Critical">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>  </table>
+  </div>
+  <h3>High Priority</h3>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Algorithm</th><th>Issue</th><th>Why It Matters</th><th>Recommended Fix</th><th>Effort</th><th>Exposure</th><th>Retention</th></tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>RC4_128_SHA</td>
+      <td>Vulnerable (none)</td>
+      <td>RC4 has known classical biases and practical plaintext-recovery attacks; it should be disabled independent of any quantum consideration.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>RC4_128_SHA</td>
+      <td>Vulnerable (none)</td>
+      <td>RC4 has known classical biases and practical plaintext-recovery attacks; it should be disabled independent of any quantum consideration.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>RC4_128_SHA</td>
+      <td>Vulnerable (none)</td>
+      <td>RC4 has known classical biases and practical plaintext-recovery attacks; it should be disabled independent of any quantum consideration.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>3DES_EDE_CBC_SHA</td>
+      <td>Vulnerable (grover)</td>
+      <td>3DES has a 112-bit effective classical strength (already below today's 128-bit minimum) and is additionally weakened by Grover's algorithm; also subject to the classical Sweet32 birthday attack due to its 64-bit block size.</td>
+      <td>Disable. Use AES-256-GCM or ChaCha20-Poly1305.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>DHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Finite-field Diffie-Hellman relies on the discrete logarithm problem, broken in polynomial time by Shor's algorithm on a CRQC.</td>
+      <td>Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid construction during the transition period.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-High">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>ECDHE</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>high</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>  </table>
+  </div>
+  <h3>Medium Priority</h3>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Algorithm</th><th>Issue</th><th>Why It Matters</th><th>Recommended Fix</th><th>Effort</th><th>Exposure</th><th>Retention</th></tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>ECDSA (secp256r1)</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>ecdsa-with-SHA256</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>ecdsa-with-SHA384</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>ECDSA (secp256r1)</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>ecdsa-with-SHA256</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>ecdsa-with-SHA384</td>
+      <td>Vulnerable (shor)</td>
+      <td>Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on the elliptic curve discrete logarithm problem, which Shor's algorithm also solves in polynomial time on a CRQC. This includes modern curves like X25519/Ed25519 — curve choice does not change the quantum verdict, only classical performance/security tradeoffs.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - 3DES Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RC4 Cipher (badssl.com)</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>—</td>
+      <td>RSA</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>—</td>
+      <td>sha256WithRSAEncryption</td>
+      <td>Vulnerable (shor)</td>
+      <td>RSA's security rests on integer factorization, which Shor's algorithm solves in polynomial time on a cryptographically relevant quantum computer (CRQC). This holds for any RSA key size — a bigger key raises the classical difficulty but not the quantum one.</td>
+      <td>For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid classical+PQC key exchange during the transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.0</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.1</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Reference Site - google.com</td>
+      <td>TLS 1.3</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.0</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.1</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_CBC_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Example Corp - Public Website</td>
+      <td>TLS 1.3</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>3y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_GCM_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_CBC_SHA256</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Medium">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>AES_128_CBC_SHA</td>
+      <td>Weakened (grover)</td>
+      <td>Grover's algorithm gives a quadratic speedup against symmetric key search, reducing AES-128's effective security to roughly 64 bits against a quantum adversary. Not broken today, but below the 128-bit-equivalent floor NIST recommends for longer-lived data.</td>
+      <td>Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>  </table>
+  </div>
+  <h3>Low Priority</h3>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Algorithm</th><th>Issue</th><th>Why It Matters</th><th>Recommended Fix</th><th>Effort</th><th>Exposure</th><th>Retention</th></tr>    <tr class="tier-Low">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_256_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - Legacy TLS 1.1 (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_128_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>1y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_256_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.0</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_128_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_256_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.1</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_128_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>low</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>CAMELLIA_256_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_256_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>    <tr class="tier-Low">
+      <td>Demo - RSA 2048 Only (badssl.com)</td>
+      <td>TLS 1.2</td>
+      <td>CAMELLIA_128_CBC_SHA</td>
+      <td>Unknown (unknown)</td>
+      <td>No rule matched algorithm 'CAMELLIA_128_CBC_SHA' for mechanism 'symmetric'. Extend rules.yaml.</td>
+      <td>Manually review; add a rule to rules.yaml once assessed.</td>
+      <td>medium</td>
+      <td>internet</td>
+      <td>15y</td>
+    </tr>  </table>
+  </div>
+</section>
+
+<section>
+  <h2 id="migration-timeline">Migration Timeline (NIST / CNSA 2.0 Anchors)</h2>
+  <p>This assessment's urgency framing is anchored to public federal guidance, not an arbitrary internal deadline:</p>
+  <ul class="timeline">    <li><strong>Aug 2024</strong> — NIST finalizes the first PQC standards: FIPS 203 (ML-KEM / Kyber, key encapsulation), FIPS 204 (ML-DSA / Dilithium, signatures), and FIPS 205 (SLH-DSA / SPHINCS+, signatures).</li>    <li><strong>Nov 2024</strong> — NIST IR 8547 (initial public draft) proposes deprecating ~112-bit-security classical algorithms (RSA-2048, ECC P-256/secp256r1) by 2030.</li>    <li><strong>Jan 1, 2027</strong> — CNSA 2.0: new National Security System equipment acquisitions are expected to be CNSA 2.0-compliant by default.</li>    <li><strong>2030</strong> — NIST target deprecation date for RSA-2048/ECC P-256-class algorithms. CNSA 2.0 target for exclusive use on software/firmware signing and networking equipment.</li>    <li><strong>2033</strong> — CNSA 2.0 target for exclusive use on web, cloud, and operating systems.</li>    <li><strong>2035</strong> — NIST target date after which RSA/ECC (at any key size) are disallowed. OMB M-26-15 sets this as the full-migration deadline for remaining federal systems, consistent with National Security Memorandum 10.</li>  </ul>
+  <p><em>Sources: NIST IR 8547 (Transition to Post-Quantum Cryptography Standards),
+     NSA CNSA 2.0 Transition Timeline (CSA, 2022, reaffirmed 2025), OMB M-26-15,
+     National Security Memorandum 10.</em></p>
+</section>
+
+<footer>
+  Scope: network-facing TLS/X.509 only (data-at-rest, VPN/IPsec, SSH, and HSM-embedded keys are out of
+  scope for v1). Classification logic is rule-based and fully editable — see
+  <code>pqc_audit/rules.yaml</code>. Detection limitation: this scan reports the classical/hybrid key
+  exchange actually negotiated by the scanning client; a server that only offers a PQC hybrid to clients
+  that request it may show as classical here even if partially PQC-ready.
+</footer>
+
+</body>
+</html>

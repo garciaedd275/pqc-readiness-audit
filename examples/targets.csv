@@ -1,0 +1,7 @@
+hostname,port,exposure,retention_years,asset_name,notes
+example.com,443,internet,3,Example Corp - Public Website,"Marketing site; low-sensitivity content, short retention need"
+www.google.com,443,internet,1,Reference Site - google.com,"Included as a modern, well-maintained TLS baseline for comparison"
+rsa2048.badssl.com,443,internet,15,Demo - RSA 2048 Only (badssl.com),"badssl.com test endpoint: server only offers RSA key exchange, no forward secrecy"
+tls-v1-1.badssl.com,1011,internet,1,Demo - Legacy TLS 1.1 (badssl.com),"badssl.com test endpoint: deprecated protocol version still enabled"
+rc4.badssl.com,443,internet,1,Demo - RC4 Cipher (badssl.com),"badssl.com test endpoint: classically-broken RC4 cipher offered"
+3des.badssl.com,443,internet,1,Demo - 3DES Cipher (badssl.com),"badssl.com test endpoint: weak 3DES cipher offered"

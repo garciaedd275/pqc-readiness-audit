@@ -1,0 +1,1208 @@
+{
+  "generated_at": "2026-08-08T20:27:41.188083+00:00",
+  "targets": [
+    {
+      "hostname": "example.com",
+      "port": 443,
+      "exposure": "internet",
+      "retention_years": 3,
+      "asset_name": "Example Corp - Public Website",
+      "notes": "Marketing site; low-sensitivity content, short retention need"
+    },
+    {
+      "hostname": "www.google.com",
+      "port": 443,
+      "exposure": "internet",
+      "retention_years": 1,
+      "asset_name": "Reference Site - google.com",
+      "notes": "Included as a modern, well-maintained TLS baseline for comparison"
+    },
+    {
+      "hostname": "rsa2048.badssl.com",
+      "port": 443,
+      "exposure": "internet",
+      "retention_years": 15,
+      "asset_name": "Demo - RSA 2048 Only (badssl.com)",
+      "notes": "badssl.com test endpoint: server only offers RSA key exchange, no forward secrecy"
+    },
+    {
+      "hostname": "tls-v1-1.badssl.com",
+      "port": 1011,
+      "exposure": "internet",
+      "retention_years": 1,
+      "asset_name": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "notes": "badssl.com test endpoint: deprecated protocol version still enabled"
+    },
+    {
+      "hostname": "rc4.badssl.com",
+      "port": 443,
+      "exposure": "internet",
+      "retention_years": 1,
+      "asset_name": "Demo - RC4 Cipher (badssl.com)",
+      "notes": "badssl.com test endpoint: classically-broken RC4 cipher offered"
+    },
+    {
+      "hostname": "3des.badssl.com",
+      "port": 443,
+      "exposure": "internet",
+      "retention_years": 1,
+      "asset_name": "Demo - 3DES Cipher (badssl.com)",
+      "notes": "badssl.com test endpoint: weak 3DES cipher offered"
+    }
+  ],
+  "observations": [
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "signature",
+      "algorithm": "ECDSA (secp256r1)",
+      "key_size": 256,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-12T18:08:35+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "signature",
+      "algorithm": "ecdsa-with-SHA256",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-12T18:08:35+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-12T18:08:35+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "signature",
+      "algorithm": "ecdsa-with-SHA384",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Chain certificate (CN=WE2,O=Google Trust Services,C=US) issuer signature algorithm",
+      "not_valid_after": "2029-02-20T14:00:00+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Chain certificate (CN=GTS Root R4,O=Google Trust Services LLC,C=US) issuer signature algorithm",
+      "not_valid_after": "2028-01-28T00:00:42+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-12T18:08:29+00:00"
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_GCM_SHA384 (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_GCM_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_GCM_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_GCM_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 253,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "CHACHA20_POLY1305_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 253,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "CHACHA20_POLY1305_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_GCM_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Reference Site - google.com",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_GCM_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_AES_128_GCM_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "signature",
+      "algorithm": "ECDSA (secp256r1)",
+      "key_size": 256,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-27T22:17:21+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "signature",
+      "algorithm": "ecdsa-with-SHA256",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-27T22:17:21+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-27T22:17:21+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "signature",
+      "algorithm": "ecdsa-with-SHA384",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Chain certificate (CN=Cloudflare TLS Issuing ECC CA 3,O=SSL Corporation,C=US) issuer signature algorithm",
+      "not_valid_after": "2035-05-27T19:49:44+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Chain certificate (CN=SSL.com TLS ECC Root CA 2022,O=SSL Corporation,C=US) issuer signature algorithm",
+      "not_valid_after": "2028-12-31T23:59:59+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-27T22:17:20+00:00"
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_GCM_SHA384 (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_GCM_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_GCM_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_GCM_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 253,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "CHACHA20_POLY1305_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 253,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "CHACHA20_POLY1305_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_CHACHA20_POLY1305_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_GCM_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Example Corp - Public Website",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_GCM_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.3",
+      "detail": "Negotiated in TLS_AES_128_GCM_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 1024,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 1024,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - 3DES Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 1024,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "RC4_128_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "RC4_128_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "RC4_128_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RC4 Cipher (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_RC4_128_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - Legacy TLS 1.1 (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 1024,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": null,
+      "detail": "Leaf certificate public key (server authentication)",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "signature",
+      "algorithm": "sha256WithRSAEncryption",
+      "key_size": null,
+      "protocol_version": null,
+      "detail": "Leaf certificate issuer signature algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "hash",
+      "algorithm": "SHA256",
+      "key_size": 32,
+      "protocol_version": null,
+      "detail": "Certificate signature hash algorithm",
+      "not_valid_after": "2026-10-26T20:03:01+00:00"
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.0",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.1",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "RSA",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA (static key exchange, no forward secrecy)",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "CAMELLIA_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_CAMELLIA_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_GCM_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA256",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_256_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_GCM_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_GCM_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA256",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA256",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_128_CBC_SHA",
+      "key_size": 128,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_AES_128_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "3DES_EDE_CBC_SHA",
+      "key_size": 168,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "ECDHE",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "symmetric",
+      "algorithm": "AES_256_CBC_SHA384",
+      "key_size": 256,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+      "not_valid_after": null
+    },
+    {
+      "target": "Demo - RSA 2048 Only (badssl.com)",
+      "mechanism": "key_exchange",
+      "algorithm": "DHE",
+      "key_size": 2048,
+      "protocol_version": "TLS 1.2",
+      "detail": "Negotiated in TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA",
+      "not_valid_after": null
+    }
+  ],
+  "errors": []
+}

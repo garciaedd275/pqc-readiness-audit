@@ -1,0 +1,234 @@
+# PQC classification rule table
+# ================================
+# This is the judgment layer of the audit tool. Each rule says: "if you see
+# this algorithm doing this job (mechanism), classify it this way, because
+# of this quantum attack, and recommend this replacement."
+#
+# Rules are evaluated top-to-bottom; the first rule whose `mechanism` and
+# `match` conditions fit an observation wins. Add new algorithms (e.g. a new
+# NIST PQC standard, or a deprecated classical cipher) by adding a rule here
+# — no Python changes required.
+#
+# Fields:
+#   id                      short unique identifier
+#   mechanism               key_exchange | signature | symmetric | hash | any
+#   match                   list of case-insensitive substrings matched
+#                            against the observed algorithm name. A rule
+#                            matches if ANY pattern is found.
+#   key_size_below          (optional) rule only applies if key_size < this
+#   key_size_at_least       (optional) rule only applies if key_size >= this
+#   classification          vulnerable | weakened | safe | pqc | unknown
+#   quantum_attack          shor | grover | none
+#   rationale               plain-language justification (shown in reports)
+#   recommended_replacement plain-language remediation guidance
+
+rules:
+
+  # ---- Post-quantum algorithms (NIST-standardized, FIPS 203/204/205) ----
+  - id: pqc-ml-kem
+    mechanism: key_exchange
+    match: ["ML-KEM", "KYBER", "X25519MLKEM", "X25519_KYBER", "P256_KYBER", "SECP256R1MLKEM"]
+    classification: pqc
+    quantum_attack: none
+    rationale: >
+      ML-KEM (formerly CRYSTALS-Kyber) is the NIST-standardized (FIPS 203)
+      post-quantum key encapsulation mechanism. It is based on the Module
+      Learning With Errors problem, which has no known efficient quantum
+      algorithm.
+    recommended_replacement: "No action needed — already PQC."
+
+  - id: pqc-ml-dsa
+    mechanism: signature
+    match: ["ML-DSA", "DILITHIUM"]
+    classification: pqc
+    quantum_attack: none
+    rationale: >
+      ML-DSA (formerly CRYSTALS-Dilithium) is the NIST-standardized
+      (FIPS 204) post-quantum signature scheme, based on structured lattice
+      problems believed hard for both classical and quantum computers.
+    recommended_replacement: "No action needed — already PQC."
+
+  - id: pqc-falcon
+    mechanism: signature
+    match: ["FALCON", "FN-DSA"]
+    classification: pqc
+    quantum_attack: none
+    rationale: >
+      Falcon (FN-DSA) is a NIST-selected lattice-based post-quantum
+      signature scheme, offering smaller signatures than ML-DSA at
+      comparable security.
+    recommended_replacement: "No action needed — already PQC."
+
+  - id: pqc-slh-dsa
+    mechanism: signature
+    match: ["SLH-DSA", "SPHINCS"]
+    classification: pqc
+    quantum_attack: none
+    rationale: >
+      SLH-DSA (formerly SPHINCS+) is a NIST-standardized (FIPS 205)
+      stateless hash-based signature scheme. Its security reduces to hash
+      function preimage/collision resistance rather than number theory, so
+      it has a different (and very conservative) risk profile from
+      lattice-based PQC.
+    recommended_replacement: "No action needed — already PQC."
+
+  # ---- Shor-broken asymmetric cryptography ----
+  # Key size is intentionally NOT a factor for these rules: Shor's algorithm
+  # solves integer factorization and discrete log in polynomial time on a
+  # sufficiently large quantum computer, regardless of key length. A larger
+  # RSA/ECC key raises the *classical* bar and buys a little time, but does
+  # not change the quantum verdict.
+  - id: shor-rsa
+    mechanism: any
+    match: ["RSA"]
+    classification: vulnerable
+    quantum_attack: shor
+    rationale: >
+      RSA's security rests on integer factorization, which Shor's algorithm
+      solves in polynomial time on a cryptographically relevant quantum
+      computer (CRQC). This holds for any RSA key size — a bigger key
+      raises the classical difficulty but not the quantum one.
+    recommended_replacement: >
+      For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid
+      classical+PQC key exchange during the transition. For signatures:
+      migrate to ML-DSA, Falcon, or SLH-DSA.
+
+  - id: shor-ecc
+    mechanism: any
+    match: ["ECDSA", "ECDHE", "ECDH", "EC ", "SECP", "X25519", "X448", "ED25519", "ED448", "CURVE25519", "ELLIPTICCURVE", "EllipticCurve"]
+    classification: vulnerable
+    quantum_attack: shor
+    rationale: >
+      Elliptic-curve cryptography (ECDSA/ECDH and EdDSA variants) relies on
+      the elliptic curve discrete logarithm problem, which Shor's algorithm
+      also solves in polynomial time on a CRQC. This includes modern curves
+      like X25519/Ed25519 — curve choice does not change the quantum
+      verdict, only classical performance/security tradeoffs.
+    recommended_replacement: >
+      For key exchange: migrate to ML-KEM (FIPS 203), ideally via a hybrid
+      ECDHE+ML-KEM key exchange (e.g. X25519MLKEM768) during the
+      transition. For signatures: migrate to ML-DSA, Falcon, or SLH-DSA.
+
+  - id: shor-dh
+    mechanism: any
+    match: ["DHE", " DH ", "DIFFIE", "DHE_RSA", "DHE_DSS"]
+    classification: vulnerable
+    quantum_attack: shor
+    rationale: >
+      Finite-field Diffie-Hellman relies on the discrete logarithm problem,
+      broken in polynomial time by Shor's algorithm on a CRQC.
+    recommended_replacement: >
+      Migrate to ML-KEM (FIPS 203) for key exchange, ideally via a hybrid
+      construction during the transition period.
+
+  - id: shor-dsa
+    mechanism: signature
+    match: ["DSA", "DSS"]
+    classification: vulnerable
+    quantum_attack: shor
+    rationale: >
+      DSA's security rests on the discrete logarithm problem, broken by
+      Shor's algorithm on a CRQC.
+    recommended_replacement: "Migrate to ML-DSA, Falcon, or SLH-DSA."
+
+  # ---- Classically broken / deprecated (not primarily a PQC issue, but a
+  # crypto-hygiene finding an audit tool should still surface) ----
+  - id: classical-rc4
+    mechanism: symmetric
+    match: ["RC4"]
+    classification: vulnerable
+    quantum_attack: none
+    rationale: >
+      RC4 has known classical biases and practical plaintext-recovery
+      attacks; it should be disabled independent of any quantum
+      consideration.
+    recommended_replacement: "Disable. Use AES-256-GCM or ChaCha20-Poly1305."
+
+  - id: classical-3des
+    mechanism: symmetric
+    match: ["3DES", "DES", "TRIPLE"]
+    classification: vulnerable
+    quantum_attack: grover
+    rationale: >
+      3DES has a 112-bit effective classical strength (already below
+      today's 128-bit minimum) and is additionally weakened by Grover's
+      algorithm; also subject to the classical Sweet32 birthday attack due
+      to its 64-bit block size.
+    recommended_replacement: "Disable. Use AES-256-GCM or ChaCha20-Poly1305."
+
+  - id: classical-null
+    mechanism: symmetric
+    match: ["NULL", "ANON", "EXPORT"]
+    classification: vulnerable
+    quantum_attack: none
+    rationale: "NULL/anonymous/export-grade ciphers provide no meaningful confidentiality."
+    recommended_replacement: "Disable immediately. Use AES-256-GCM or ChaCha20-Poly1305."
+
+  - id: classical-sha1-md5
+    mechanism: hash
+    match: ["SHA1", "SHA-1", "MD5"]
+    classification: vulnerable
+    quantum_attack: none
+    rationale: >
+      SHA-1 and MD5 have practical classical collision attacks and are
+      deprecated for signatures and certificate use independent of the
+      quantum threat.
+    recommended_replacement: "Use SHA-256 or SHA-384 (classical); no quantum-specific action needed beyond that."
+
+  # ---- Grover-weakened symmetric crypto (still usable, margin reduced) ----
+  - id: grover-aes128
+    mechanism: symmetric
+    match: ["AES_128", "AES128", "AES-128"]
+    classification: weakened
+    quantum_attack: grover
+    rationale: >
+      Grover's algorithm gives a quadratic speedup against symmetric key
+      search, reducing AES-128's effective security to roughly 64 bits
+      against a quantum adversary. Not broken today, but below the
+      128-bit-equivalent floor NIST recommends for longer-lived data.
+    recommended_replacement: "Prefer AES-256-GCM or ChaCha20-Poly1305 for new deployments and long-retention data."
+
+  - id: grover-chacha20-note
+    mechanism: symmetric
+    match: ["CHACHA20"]
+    classification: safe
+    quantum_attack: grover
+    rationale: >
+      ChaCha20-Poly1305 uses a 256-bit key; Grover's algorithm reduces its
+      effective security to roughly 128 bits against a quantum adversary,
+      which remains an adequate security margin.
+    recommended_replacement: "No action needed."
+
+  # ---- Adequate symmetric / hash strength ----
+  - id: safe-aes256
+    mechanism: symmetric
+    match: ["AES_256", "AES256", "AES-256"]
+    classification: safe
+    quantum_attack: grover
+    rationale: >
+      Grover's algorithm reduces AES-256's effective security to roughly
+      128 bits against a quantum adversary — still an adequate margin
+      under current NIST/CNSA 2.0 guidance.
+    recommended_replacement: "No action needed."
+
+  - id: safe-sha2
+    mechanism: hash
+    match: ["SHA256", "SHA-256", "SHA384", "SHA-384", "SHA512", "SHA-512"]
+    classification: safe
+    quantum_attack: grover
+    rationale: >
+      SHA-2 family hashes at 256 bits or longer retain an adequate margin
+      against Grover's quadratic speedup on preimage search.
+    recommended_replacement: "No action needed."
+
+  - id: safe-psk
+    mechanism: any
+    match: ["PSK"]
+    classification: unknown
+    quantum_attack: none
+    rationale: >
+      Pre-shared-key ciphersuites do not rely on public-key math for key
+      establishment, so they are not Shor-vulnerable in the way RSA/ECC
+      are. However, PSK provisioning/rotation practices are out of scope
+      for this network scan and should be reviewed separately.
+    recommended_replacement: "Review PSK provisioning and rotation practices out-of-band."

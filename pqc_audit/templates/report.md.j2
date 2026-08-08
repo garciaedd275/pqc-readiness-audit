@@ -1,0 +1,109 @@
+# Post-Quantum Cryptography (PQC) Readiness Report
+
+**Generated:** {{ generated_at }}
+**Assets scanned:** {{ summary.total_assets }} ({{ scan_errors|length }} scan error(s))
+**Threat horizon assumption:** {{ threat_horizon_years }} years (see [Migration Timeline](#migration-timeline-nist--cnsa-20-anchors))
+
+---
+
+## Executive Summary
+
+This report assesses network-facing TLS/certificate cryptography against
+post-quantum risk. It does **not** test whether an attacker can break these
+systems today — it tests whether the cryptography in use today will still
+protect this traffic once a cryptographically relevant quantum computer
+(CRQC) exists, and whether traffic captured today could be decrypted
+retroactively ("harvest now, decrypt later").
+
+- **{{ summary.total_findings }}** distinct cryptographic configurations were observed across **{{ summary.total_assets }}** scanned asset(s).
+- **{{ summary.vulnerable_count }}** are classified **Vulnerable** (broken by Shor's algorithm on a CRQC, or already classically broken).
+- **{{ summary.weakened_count }}** are classified **Weakened** (margin reduced by Grover's algorithm; not broken today).
+- **{{ summary.safe_count }}** are classified **Safe** and **{{ summary.pqc_count }}** are already **Post-Quantum**.
+{% if summary.unknown_count %}
+- **{{ summary.unknown_count }}** are **Unknown** — not recognized by the current rule table and need manual review.
+{% endif %}
+- **{{ summary.internet_facing_hndl_count }}** internet-facing finding(s) involve a Shor-vulnerable key exchange — these are the ones "harvest now, decrypt later" applies to directly, because an eavesdropper recording that traffic today could decrypt it once a CRQC exists.
+- **{{ summary.critical_count }}** finding(s) are **Critical** priority and **{{ summary.high_count }}** are **High** priority; see the [Prioritized Remediation Roadmap](#prioritized-remediation-roadmap) below.
+
+{% if scan_errors %}
+### Scan Errors
+
+| Asset | Reason |
+|---|---|
+{% for e in scan_errors %}
+| {{ e.target }} | {{ e.reason }} |
+{% endfor %}
+{% endif %}
+
+---
+
+## Crypto Inventory Findings
+
+Every distinct algorithm observed, doing every distinct job (key exchange,
+certificate signature, or symmetric cipher), across every scanned asset.
+
+| Asset | Protocol | Mechanism | Algorithm | Key Size | Expiry | Quantum-Vulnerable | Classification |
+|---|---|---|---|---|---|---|---|
+{% for row in findings_table %}
+| {{ row.asset }} | {{ row.protocol_version or "—" }} | {{ row.mechanism }} | {{ row.algorithm }} | {{ row.key_size or "—" }} | {{ row.expiry or "—" }} | {{ row.quantum_vulnerable }} | {{ row.classification }} |
+{% endfor %}
+
+---
+
+## Prioritized Remediation Roadmap
+
+Findings are ranked by a priority score combining: crypto severity, whether
+"harvest now, decrypt later" applies and how far the asset's declared data
+retention extends past the assumed quantum threat horizon, internet vs.
+internal exposure, and remediation complexity. Full methodology in the
+[README](README.md#how-prioritization-works).
+
+{% for tier in ["Critical", "High", "Medium", "Low"] %}
+{% if roadmap[tier] %}
+### {{ tier }} Priority
+
+| Asset | Protocol | Algorithm | Issue | Why It Matters | Recommended Fix | Remediation Effort | Exposure | Retention |
+|---|---|---|---|---|---|---|---|---|
+{% for row in roadmap[tier] %}
+| {{ row.asset }} | {{ row.protocol_version or "—" }} | {{ row.algorithm }} | {{ row.classification }} ({{ row.quantum_attack }}) | {{ row.rationale }} | {{ row.recommended_replacement }} | {{ row.remediation_complexity }} | {{ row.exposure }} | {{ row.retention_years }}y |
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% if not (roadmap["Critical"] or roadmap["High"] or roadmap["Medium"] or roadmap["Low"]) %}
+No outstanding remediation items — every observed algorithm is already Safe or Post-Quantum.
+{% endif %}
+
+---
+
+## Migration Timeline (NIST / CNSA 2.0 Anchors)
+
+This assessment's urgency framing is anchored to public federal guidance,
+not an arbitrary internal deadline:
+
+{% for milestone in timeline %}
+- **{{ milestone.date }}** — {{ milestone.description }}
+{% endfor %}
+
+*Sources: NIST IR 8547 (Transition to Post-Quantum Cryptography Standards),
+NSA CNSA 2.0 Transition Timeline (CSA, 2022, reaffirmed 2025), OMB M-26-15,
+National Security Memorandum 10.*
+
+---
+
+## Scope & Methodology Notes
+
+- **Scope:** network-facing TLS and X.509 certificate configuration only
+  (this scan). Data-at-rest encryption, VPN/IPsec, SSH, code-signing, and
+  HSM-embedded keys are out of scope for this report — see the README for
+  the v2 roadmap.
+- **Classification logic:** rule-based, not statistical — see
+  `pqc_audit/rules.yaml` for the full, editable rule table and the
+  cryptographic rationale behind each verdict.
+- **Known detection limitation:** this scan reports the classical/hybrid
+  key exchange actually negotiated by the scanning client. If a server
+  only offers a PQC hybrid key exchange (e.g. X25519+ML-KEM) to clients
+  that request it, and the scanning library doesn't request it, that
+  server will show here as classical ECDHE even if it is already partially
+  PQC-ready for compliant clients. Treat "no PQC key exchange observed" as
+  "not confirmed," not "confirmed absent."

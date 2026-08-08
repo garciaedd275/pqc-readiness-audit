@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PQC Readiness Report — {{ generated_at }}</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1a1a; --muted: #5b6472; --border: #e2e5ea;
+    --critical: #b3261e; --high: #b5560a; --medium: #8a6d00; --low: #2e6b3f;
+    --card: #f7f8fa; --accent: #2454a6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14161a; --fg:#e8eaed; --muted:#9aa3b2; --card:#1e2126; --border:#2b2f36; --accent:#7ba7ff; }
+  }
+  body { font-family: -apple-system, Segoe UI, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--fg); max-width: 980px; margin: 2rem auto; padding: 0 1.5rem; line-height:1.5; }
+  h1 { margin-bottom: 0.2rem; }
+  .meta { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 0.75rem; margin: 1.5rem 0; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; }
+  .stat .n { font-size: 1.6rem; font-weight: 700; }
+  .stat .l { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0 2rem; font-size: 0.88rem; }
+  th, td { border: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+  th { background: var(--card); }
+  .overflow { overflow-x: auto; }
+  tr.tier-Critical td:nth-child(1) { border-left: 4px solid var(--critical); }
+  tr.tier-High td:nth-child(1) { border-left: 4px solid var(--high); }
+  tr.tier-Medium td:nth-child(1) { border-left: 4px solid var(--medium); }
+  tr.tier-Low td:nth-child(1) { border-left: 4px solid var(--low); }
+  .badge { display:inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .badge.vulnerable { background:#fbdedb; color:var(--critical); }
+  .badge.weakened { background:#fbe8c9; color:var(--medium); }
+  .badge.safe { background:#dcf3e3; color:var(--low); }
+  .badge.pqc { background:#dbe8fb; color:var(--accent); }
+  .badge.unknown { background:#e7e7e7; color:#555; }
+  @media (prefers-color-scheme: dark) {
+    .badge.vulnerable { background:#3a1f1e; color:#ff8a80; }
+    .badge.weakened { background:#3a2f14; color:#ffcc66; }
+    .badge.safe { background:#173a24; color:#7de3a0; }
+    .badge.pqc { background:#182a45; color:#9dc0ff; }
+    .badge.unknown { background:#2b2f36; color:#aab; }
+  }
+  section { margin-bottom: 2.5rem; }
+  a { color: var(--accent); }
+  .timeline li { margin-bottom: 0.4rem; }
+  footer { color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Post-Quantum Cryptography (PQC) Readiness Report</h1>
+<div class="meta">Generated {{ generated_at }} &middot; {{ summary.total_assets }} asset(s) scanned &middot; threat horizon assumption: {{ threat_horizon_years }} years</div>
+
+<section>
+  <h2>Executive Summary</h2>
+  <p>This report assesses network-facing TLS/certificate cryptography against post-quantum risk.
+     It does <strong>not</strong> test whether an attacker can break these systems today — it tests whether
+     the cryptography in use today will still protect this traffic once a cryptographically relevant
+     quantum computer (CRQC) exists, and whether traffic captured today could be decrypted retroactively
+     ("harvest now, decrypt later").</p>
+  <div class="summary-grid">
+    <div class="stat"><div class="n">{{ summary.total_findings }}</div><div class="l">Findings</div></div>
+    <div class="stat"><div class="n">{{ summary.vulnerable_count }}</div><div class="l">Vulnerable</div></div>
+    <div class="stat"><div class="n">{{ summary.weakened_count }}</div><div class="l">Weakened</div></div>
+    <div class="stat"><div class="n">{{ summary.safe_count }}</div><div class="l">Safe</div></div>
+    <div class="stat"><div class="n">{{ summary.pqc_count }}</div><div class="l">Post-Quantum</div></div>
+    <div class="stat"><div class="n">{{ summary.critical_count }}</div><div class="l">Critical Priority</div></div>
+    <div class="stat"><div class="n">{{ summary.high_count }}</div><div class="l">High Priority</div></div>
+    <div class="stat"><div class="n">{{ summary.internet_facing_hndl_count }}</div><div class="l">Internet-Facing HNDL Risk</div></div>
+  </div>
+  {% if scan_errors %}
+  <h3>Scan Errors</h3>
+  <div class="overflow"><table><tr><th>Asset</th><th>Reason</th></tr>
+  {%- for e in scan_errors %}<tr><td>{{ e.target }}</td><td>{{ e.reason }}</td></tr>{%- endfor %}
+  </table></div>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Crypto Inventory Findings</h2>
+  <p>Every distinct algorithm observed, doing every distinct job (key exchange, certificate signature,
+     or symmetric cipher), across every scanned asset.</p>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Mechanism</th><th>Algorithm</th><th>Key Size</th><th>Expiry</th><th>Quantum-Vulnerable</th><th>Classification</th></tr>
+    {%- for row in findings_table %}
+    <tr>
+      <td>{{ row.asset }}</td>
+      <td>{{ row.protocol_version or "—" }}</td>
+      <td>{{ row.mechanism }}</td>
+      <td>{{ row.algorithm }}</td>
+      <td>{{ row.key_size or "—" }}</td>
+      <td>{{ row.expiry or "—" }}</td>
+      <td>{{ row.quantum_vulnerable }}</td>
+      <td><span class="badge {{ row.classification|lower }}">{{ row.classification }}</span></td>
+    </tr>
+    {%- endfor %}
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Prioritized Remediation Roadmap</h2>
+  <p>Findings are ranked by a priority score combining: crypto severity, whether "harvest now, decrypt
+     later" applies and how far the asset's declared data retention extends past the assumed quantum
+     threat horizon, internet vs. internal exposure, and remediation complexity. Full methodology in the
+     README.</p>
+  {% for tier in ["Critical", "High", "Medium", "Low"] %}
+  {%- if roadmap[tier] %}
+  <h3>{{ tier }} Priority</h3>
+  <div class="overflow">
+  <table>
+    <tr><th>Asset</th><th>Protocol</th><th>Algorithm</th><th>Issue</th><th>Why It Matters</th><th>Recommended Fix</th><th>Effort</th><th>Exposure</th><th>Retention</th></tr>
+    {%- for row in roadmap[tier] %}
+    <tr class="tier-{{ tier }}">
+      <td>{{ row.asset }}</td>
+      <td>{{ row.protocol_version or "—" }}</td>
+      <td>{{ row.algorithm }}</td>
+      <td>{{ row.classification }} ({{ row.quantum_attack }})</td>
+      <td>{{ row.rationale }}</td>
+      <td>{{ row.recommended_replacement }}</td>
+      <td>{{ row.remediation_complexity }}</td>
+      <td>{{ row.exposure }}</td>
+      <td>{{ row.retention_years }}y</td>
+    </tr>
+    {%- endfor %}
+  </table>
+  </div>
+  {% endif %}
+  {%- endfor %}
+  {%- if not (roadmap["Critical"] or roadmap["High"] or roadmap["Medium"] or roadmap["Low"]) %}
+  <p>No outstanding remediation items — every observed algorithm is already Safe or Post-Quantum.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2 id="migration-timeline">Migration Timeline (NIST / CNSA 2.0 Anchors)</h2>
+  <p>This assessment's urgency framing is anchored to public federal guidance, not an arbitrary internal deadline:</p>
+  <ul class="timeline">
+    {%- for milestone in timeline %}
+    <li><strong>{{ milestone.date }}</strong> — {{ milestone.description }}</li>
+    {%- endfor %}
+  </ul>
+  <p><em>Sources: NIST IR 8547 (Transition to Post-Quantum Cryptography Standards),
+     NSA CNSA 2.0 Transition Timeline (CSA, 2022, reaffirmed 2025), OMB M-26-15,
+     National Security Memorandum 10.</em></p>
+</section>
+
+<footer>
+  Scope: network-facing TLS/X.509 only (data-at-rest, VPN/IPsec, SSH, and HSM-embedded keys are out of
+  scope for v1). Classification logic is rule-based and fully editable — see
+  <code>pqc_audit/rules.yaml</code>. Detection limitation: this scan reports the classical/hybrid key
+  exchange actually negotiated by the scanning client; a server that only offers a PQC hybrid to clients
+  that request it may show as classical here even if partially PQC-ready.
+</footer>
+
+</body>
+</html>
