@@ -79,6 +79,11 @@ pqc-audit report scan_results.json -o report.md
 pqc-audit report scan_results.json -o report.html --format html
 ```
 
+**Installing on Kali Linux (or any PEP 668 / "externally managed"
+distro)?** Plain `pip install` will refuse to run there by design — see
+[`KALI.md`](KALI.md) for a `pipx`-based install that puts `pqc-audit`
+straight on your `PATH`, no venv activation required.
+
 `targets.csv` needs a `hostname` column; everything else is optional
 (defaults shown):
 
