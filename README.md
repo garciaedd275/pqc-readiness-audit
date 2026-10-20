@@ -79,6 +79,23 @@ pqc-audit report scan_results.json -o report.md
 pqc-audit report scan_results.json -o report.html --format html
 ```
 
+**Installing on macOS (as a command on your PATH, no venv to activate):**
+
+```bash
+brew install pipx && pipx ensurepath      # then open a new terminal
+git clone https://github.com/garciaedd275/pqc-readiness-audit.git
+cd pqc-readiness-audit
+pipx install .
+
+pqc-audit --version                       # verify
+pqc-audit audit examples/targets.csv -o ~/pqc_report.md
+```
+
+Upgrade after a `git pull` with `pipx reinstall pqc-readiness-audit`;
+remove with `pipx uninstall pqc-readiness-audit`. No `sudo` is needed, and
+there is no `nmap` dependency. If you're developing the tool itself, use
+the venv + `pip install -e ".[dev]"` flow above instead.
+
 **Installing on Kali Linux (or any PEP 668 / "externally managed"
 distro)?** Plain `pip install` will refuse to run there by design — see
 [`KALI.md`](KALI.md) for a `pipx`-based install that puts `pqc-audit`
