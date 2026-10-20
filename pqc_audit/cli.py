@@ -14,6 +14,7 @@ from pathlib import Path
 
 import click
 
+from pqc_audit.discovery import fetch_ct_names, normalize_domain, resolve_names, write_targets_csv
 from pqc_audit.models import Finding, TargetSpec
 from pqc_audit.report import write_report
 from pqc_audit.risk import ThreatModel, prioritize
@@ -110,6 +111,52 @@ def audit(targets_csv, output_path, fmt, scan_results_out, threat_horizon_years,
     high = sum(1 for r in scored if r.priority_tier == "High")
     click.secho(f"Wrote {out}", fg="green")
     click.echo(f"{critical} Critical, {high} High priority finding(s) across {len(targets)} asset(s).")
+
+
+@cli.command()
+@click.argument("domain")
+@click.option("-o", "--output", "output_path", required=True, type=click.Path(dir_okay=False), help="Where to write the discovered targets CSV")
+@click.option("--no-resolve", is_flag=True, default=False, help="Skip DNS resolution and keep every name found in CT logs.")
+@click.option("--include-unresolved", is_flag=True, default=False, help="Keep names that do not resolve in DNS (implied by --no-resolve).")
+@click.option("--exposure", type=click.Choice(["internet", "internal"]), default="internet", show_default=True, help="Exposure value written for every discovered asset.")
+@click.option("--retention-years", type=int, default=1, show_default=True, help="Default data retention (years) written for every discovered asset.")
+@click.option("--port", type=int, default=443, show_default=True, help="Port written for every discovered asset.")
+@click.option("--timeout", type=float, default=60.0, show_default=True, help="crt.sh request timeout in seconds.")
+def discover(domain, output_path, no_resolve, include_unresolved, exposure, retention_years, port, timeout):
+    """Find hostnames for DOMAIN via certificate transparency logs + DNS.
+
+    Discovery is passive (crt.sh and your resolver only; no connection to the
+    discovered hosts). Review the CSV before running `scan`/`audit` on it, and
+    only scan assets you own or are authorized to assess.
+    """
+    try:
+        domain = normalize_domain(domain)
+    except ValueError as exc:
+        raise click.BadParameter(str(exc), param_hint="DOMAIN") from exc
+
+    click.echo(f"Querying certificate transparency logs for *.{domain} ...")
+    try:
+        names = fetch_ct_names(domain, timeout=timeout)
+    except Exception as exc:  # network/JSON errors from crt.sh are common; report cleanly
+        click.secho(f"crt.sh lookup failed: {exc}", fg="red", err=True)
+        sys.exit(1)
+    if not names:
+        click.secho(f"No hostnames found for {domain}.", fg="yellow", err=True)
+        sys.exit(1)
+    click.echo(f"Found {len(names)} unique hostname(s).")
+
+    if no_resolve:
+        resolved = {name: [] for name in names}
+        include_unresolved = True
+    else:
+        click.echo("Resolving via DNS ...")
+        resolved = resolve_names(names)
+        live = sum(1 for ips in resolved.values() if ips)
+        click.echo(f"{live} resolve, {len(resolved) - live} do not.")
+
+    rows = write_targets_csv(output_path, resolved, exposure, retention_years, port, include_unresolved)
+    click.secho(f"Wrote {rows} target(s) to {output_path}", fg="green")
+    click.echo("Review the file, then: pqc-audit audit " + str(output_path) + " -o report.md  (authorized targets only)")
 
 
 if __name__ == "__main__":

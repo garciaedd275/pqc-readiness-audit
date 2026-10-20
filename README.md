@@ -101,6 +101,24 @@ distro)?** Plain `pip install` will refuse to run there by design — see
 [`KALI.md`](KALI.md) for a `pipx`-based install that puts `pqc-audit`
 straight on your `PATH`, no venv activation required.
 
+**Don't have a target list? Discover one.** `pqc-audit discover` pulls
+hostnames for a domain from certificate transparency logs
+([crt.sh](https://crt.sh)) and DNS, and writes a `targets.csv` the scanner
+can consume. This surfaces forgotten internet-facing assets, which carry the
+highest "harvest now, decrypt later" risk:
+
+```bash
+pqc-audit discover yourdomain.com -o targets.csv    # passive: crt.sh + your DNS resolver
+# review targets.csv, set exposure/retention_years per asset, then:
+pqc-audit audit targets.csv -o report.md            # active scan: authorized targets only
+```
+
+Discovery never connects to the discovered hosts; the `scan`/`audit` step
+does, so only run that on assets you own or are authorized to assess.
+Options: `--no-resolve`, `--include-unresolved`, `--exposure`,
+`--retention-years`, `--port`. crt.sh is a free public service that
+sometimes returns 502s; the tool retries three times before giving up.
+
 `targets.csv` needs a `hostname` column; everything else is optional
 (defaults shown):
 
