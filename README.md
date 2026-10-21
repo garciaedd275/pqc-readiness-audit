@@ -85,14 +85,17 @@ pqc-audit report scan_results.json -o report.html --format html
 brew install pipx && pipx ensurepath      # then open a new terminal
 git clone https://github.com/garciaedd275/pqc-readiness-audit.git
 cd pqc-readiness-audit
-pipx install .
+pipx install --python python3.13 .    # use Python 3.10-3.13; see note below
 
 pqc-audit --version                       # verify
 pqc-audit audit examples/targets.csv -o ~/pqc_report.md
 ```
 
 Upgrade after a `git pull` with `pipx reinstall pqc-readiness-audit`;
-remove with `pipx uninstall pqc-readiness-audit`. No `sudo` is needed, and
+remove with `pipx uninstall pqc-readiness-audit`. If `pipx install` fails with
+"ResolutionImpossible", your default `python3` is too new for `sslyze` (Homebrew
+moved to 3.15); keep the `--python python3.13` flag (`brew install python@3.13`
+if needed). No `sudo` is needed, and
 there is no `nmap` dependency. If you're developing the tool itself, use
 the venv + `pip install -e ".[dev]"` flow above instead.
 

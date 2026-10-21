@@ -77,6 +77,10 @@ From inside the `pqc-readiness-audit` directory:
 pipx install .
 ```
 
+If it fails with `ResolutionImpossible`, the default Python is too new for
+`sslyze`; use `pipx install --python python3.12 .` (or whichever 3.10-3.13
+is installed).
+
 This builds the package, creates an isolated venv at
 `~/.local/pipx/venvs/pqc-readiness-audit/`, pulls in `sslyze`,
 `cryptography`, `click`, `jinja2`, and `PyYAML` from PyPI into that venv,
